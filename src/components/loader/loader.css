@@ -1,0 +1,14 @@
+.loader {
+    animation: spin infinite 10s linear;
+    height: 80px;
+    pointer-events: none;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
