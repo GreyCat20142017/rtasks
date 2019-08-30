@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://greycat20142017.github.io/rtasks",
   "dependencies": {
+    "chart.js": "^2.8.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-paginate": "^6.3.0",

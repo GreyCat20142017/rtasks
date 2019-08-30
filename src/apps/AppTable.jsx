@@ -74,7 +74,7 @@ const AppTable = (props) => {
 
     return (
         <div>
-            <h4 className='py-3 mdb-color-text'>Таблица с данными (AppTable)</h4>
+            <h4 className='h4-responsive py-3 mdb-color-text'>Таблица с данными (AppTable)</h4>
             <div className="btn-group" role="group" aria-label="Получение данных">
                 {Object.keys(DATA_URLS).map(item => (
                     <button className="btn btn-sm btn-outline-mdb-color" key={item}

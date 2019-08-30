@@ -34,3 +34,7 @@ code {
   color: white!important;
   background-color: #45526e!important;
 }
+
+.hidden {
+  visibility: hidden;
+}

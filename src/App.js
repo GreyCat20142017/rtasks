@@ -10,10 +10,10 @@ function App() {
             <div className='col-12 col-md-8 mx-auto text-center'>
 
                 <header>
-                    <h3 className='text-center'>Разные задачи c использованием React</h3>
+                    <h3 className='h3-responsive text-center'>Разные задачи c использованием React</h3>
 
                     {TASKS_ORDER.map((item, ind) =>
-                        <button className={'btn btn-mdb-color' + (ind === task ? 'active' : '')} key={ind} type='button'
+                        <button className={'btn btn-sm ' + (ind === task ? '' : ' btn-mdb-color ')} key={ind} type='button'
                                 title={TASKS_ORDER[ind]['comment']}
                                 onClick={() => setTask(ind)}>{TASKS_ORDER[ind]['title']}</button>
                     )}

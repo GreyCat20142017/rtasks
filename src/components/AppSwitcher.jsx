@@ -1,13 +1,13 @@
 import React from 'react';
 import {TASKS} from '../constants';
 import AppTable from '../apps/AppTable';
-import AppSome from '../apps/AppSome';
+import AppChart from '../apps/AppChart';
 
 const AppSwitcher = ({component}) => {
     let rv = null;
     switch (component) {
         case TASKS.SOME: {
-            rv = <AppSome/>;
+            rv = <AppChart/>;
             break;
         }
         case TASKS.TABLE: {

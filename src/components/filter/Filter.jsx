@@ -12,7 +12,7 @@ const Filter = ({onFilterApply}) => {
     };
 
     return (
-        <div className='md-form d-flex align-items-baseline my-1'>
+        <div className='md-form d-flex align-items-baseline mt-3 mb-2'>
             <label htmlFor='idFilter'>{inputValue.trim() === '' ? 'Текст для поиска' : ''}</label>
             <input className='form-control' value={inputValue}
                    type='text' id='idFilter' onChange={(evt) => setInputValue(evt.target.value)}
