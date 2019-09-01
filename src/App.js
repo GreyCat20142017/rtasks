@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import AppSwitcher from './components/AppSwitcher';
+import AppSwitcher from './AppSwitcher';
 import {TASKS_ORDER} from './constants';
 
 function App() {

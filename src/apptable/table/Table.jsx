@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactPaginate from 'react-paginate';
 
-import {SORT_DIRECTIONS} from '../../constants';
+import {SORT_DIRECTIONS} from '../tableconstants';
 
 const SortIndicator = ({currentColumn, sortField, sortDirection, onDirectionChange}) => {
     const arrow = sortDirection === SORT_DIRECTIONS.ASC ?

@@ -1,4 +1,4 @@
-import {ACADEMY_PREFIX, GIT_TYPES, CHART_COLORS} from './constants';
+import {ACADEMY_PREFIX, CHART_COLORS, GIT_TYPES} from './chartconstants';
 
 export const parseRepoInfo = (repo) => {
     const [academyId, project, intensiveNumber] = repo.name.split('-');
@@ -40,18 +40,15 @@ const getDark = (colors) => (colors.map(color =>
         (color.substring(0, color.lastIndexOf(',')) + ', 1)'))
 );
 
-export const transformToChartData = (totals, type, onLegendClick) => {
-    const keys = Object.keys(totals);
-    const labels = keys;
-    const data = keys.map(item => totals[item]);
-
+export const transformToChartData = (sourceData, type, onLegendClick) => {
+    const labels = [...sourceData.labels];
     return ({
         type: type,
         data: {
             labels: labels,
             datasets: [{
-                label: 'количество репозиториев',
-                data: data,
+                label: sourceData.label,
+                data: [...sourceData.data],
                 backgroundColor: CHART_COLORS,
                 borderColor: getDark(CHART_COLORS),
                 borderWidth: 1
@@ -63,12 +60,23 @@ export const transformToChartData = (totals, type, onLegendClick) => {
                     ticks: {beginAtZero: true}
                 }]
             },
-            'onClick': (evt, item) => {
+            onClick: (evt, item) => {
                 if (item.length >= 0 && item[0]) {
                     onLegendClick(labels[parseInt(item[0]['_index'], 10)]);
                 }
             }
         }
+    });
+};
+
+export const getPreparedData = (totals) => {
+    const keys = Object.keys(totals);
+    const labels = keys;
+    const data = keys.map(item => totals[item]);
+    return ({
+        label: 'количество репозиториев',
+        data,
+        labels
     });
 };
 
@@ -81,3 +89,12 @@ export const getDetailsFields = (content) => (
         ((content.user.type === GIT_TYPES.INTENSIVE) ? ['academyId', 'description'] : ['name']) :
         null
 );
+
+export const getDropDownData = (operations) =>  {
+    const keys = [...Object.keys(operations)];
+    return keys.map(key => ({
+        key: key,
+        text: operations[key],
+        link: key
+    }));
+};

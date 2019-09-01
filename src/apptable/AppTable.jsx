@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {orderBy, chunk} from 'lodash';
 
-import Loader from '../components/loader/Loader';
-import Table from '../components/table/Table';
-import Filter from '../components/filter/Filter';
-import {DATA_URLS, PAGE_LIMIT, SORT_DIRECTIONS} from '../constants';
-import Details from '../components/details/Details';
+import Loader from '../common/loader/Loader';
+import Table from './table/Table';
+import Filter from './filter/Filter';
+import Details from '../common/details/Details';
+import {DATA_URLS, PAGE_LIMIT, SORT_DIRECTIONS} from './tableconstants';
 
 const containsPattern = (itemObject, pattern) => (
     Object.keys(itemObject).reduce((rv, current) => (rv || itemObject[current].toLowerCase().includes(pattern.toLowerCase())), false)
