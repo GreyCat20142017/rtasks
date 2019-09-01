@@ -1,7 +1,14 @@
 import {ACADEMY_PREFIX, CHART_COLORS, GIT_TYPES} from './chartconstants';
 
 export const parseRepoInfo = (repo) => {
-    const [academyId, project, intensiveNumber] = repo.name.split('-');
+    const isAcademy = repo.html_url.includes(ACADEMY_PREFIX);
+    let [academyId, project, intensiveNumber] = ['?', '?', '?'];
+    if (isAcademy) {
+        const [id, ...rest] = repo.name.split('-');
+        academyId = id;
+        intensiveNumber = Array.isArray(rest) && rest.length > 0 && rest[rest.length - 1].match(/[0-9]/) ? rest[rest.length - 1] : '?';
+        project = (intensiveNumber === '?' ? rest : rest.slice(0, -1)).join('-');
+    }
     return ({
         id: repo.id,
         name: repo.name,
@@ -90,7 +97,7 @@ export const getDetailsFields = (content) => (
         null
 );
 
-export const getDropDownData = (operations) =>  {
+export const getDropDownData = (operations) => {
     const keys = [...Object.keys(operations)];
     return keys.map(key => ({
         key: key,

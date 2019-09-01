@@ -4,7 +4,6 @@ import Loader from '../common/loader/Loader';
 import SimpleChart from './chart/SimpleChart';
 import Details from '../common/details/Details';
 import GitUserForm from './form/GitUserForm';
-import ProgressBar from '../common/progressbar/Progressbar';
 
 import {
     getTotals,
@@ -13,29 +12,34 @@ import {
     transformReposData,
     getDetailsFields, getPreparedData
 } from './chartfunctions';
-import {GIT_LINK_PARTS, GIT_URLS, LIMIT} from './chartconstants';
+import {GIT_HOUR_LIMIT, GIT_LINK_PARTS, GIT_URLS, LIMIT} from './chartconstants';
 
+
+const getPagesUrls = (tmpUser, url) => {
+    const isGitData = (typeof url === 'string');
+    let pages = [];
+    if (isGitData) {
+        const totalCount = tmpUser['reposCount'] ? tmpUser['reposCount'] : 0;
+        const totalPages = Math.ceil(totalCount / parseInt(LIMIT, 10)) || 1;
+
+        for (let i = 1; i <= totalPages; i++) {
+            let repoUrl = isGitData ?
+                url + GIT_LINK_PARTS.PAGE + (i) + GIT_LINK_PARTS.LIMIT :
+                url.reposUrl;
+            pages.push(repoUrl);
+        }
+    }
+    return isGitData ? pages : [url.reposUrl];
+};
 
 const AppChart = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [content, setContent] = useState({user: null, repos: []});
     const [wasError, setWasError] = useState(null);
     const [currentDetails, setCurrentDetails] = useState(null);
-    const [currentProgress, setCurrentProgress] = useState(0);
-
-    const getReposData = async (url = GIT_URLS.TEST.reposUrl, canceled = false) => {
-        return await fetch(url)
-            .then(response => response.json())
-            .then(data => (transformReposData(data))
-            ).catch(() => {
-                setWasError('Произошла ошибка при получении данных репозиториев');
-                return [];
-            });
-    };
 
     const getData = (url = GIT_URLS.TEST, canceled = false) => {
-        let tmpRepos = [];
-        let tmpUser = null;
+
         setIsLoading(true);
         setWasError(false);
 
@@ -43,23 +47,33 @@ const AppChart = (props) => {
             .then(response => response.json())
             .then(userData => {
                 if (!canceled) {
-                    tmpUser = transformUserData(userData);
-                    const totalCount = tmpUser['reposCount'] ? tmpUser['reposCount'] : 0;
-                    const totalPages = Math.ceil(totalCount / parseInt(LIMIT, 10)) || 1;
-                    for (let i = 1; i <= totalPages; i++) {
-                        let repoUrl = (typeof url === 'string') ?
-                            url + GIT_LINK_PARTS.PAGE + (i) + GIT_LINK_PARTS.LIMIT :
-                            url.reposUrl;
-                        setCurrentProgress(Math.ceil(i) / totalPages);
+                    const tmpUser = transformUserData(userData);
+                    const pages = getPagesUrls(tmpUser, url);
 
-                        getReposData(repoUrl).then(reposData => {
-                            tmpRepos.push(...reposData);
-                        }).then(() => {
-                            setIsLoading(true);
-                            setContent({user: tmpUser, repos: [...tmpRepos]});
-                        }).then(() => setIsLoading(false));
+                    if (pages.length < GIT_HOUR_LIMIT) {
+                        Promise.all(pages.map(page => fetch(page)))
+                            .then(response => Promise.all(response.map(
+                                response => response.json()
+                            )))
+                            .then(results => {
+                                const jointData = [];
+                                results.forEach(result => jointData.push(...result));
+                                setContent({user: tmpUser, repos: transformReposData(jointData)});
+                                setIsLoading(false);
+                            }).catch(error => {
+                            if (!canceled) {
+                                setWasError('Произошла ошибка при получении данных о репозиториях');
+                                setContent({user: null, repos: []});
+                                setIsLoading(false);
+                            }
+                        });
+                    } else {
+                        setWasError('У github для неавторизованных пользователей ограничение на 60 запросов в час. Не стоит и пытаться выполнить запрос с таким количеством страниц.');
+                        setContent({user: null, repos: []});
+                        setIsLoading(false);
                     }
                 }
+
             })
             .catch(error => {
                 if (!canceled) {
@@ -67,7 +81,7 @@ const AppChart = (props) => {
                     setContent({user: null, repos: []});
                     setIsLoading(false);
                 }
-            })
+            });
     };
 
     const onLegendClick = (something) => {
@@ -104,10 +118,7 @@ const AppChart = (props) => {
             <GitUserForm onGitUserClick={onGitUserClick}/>
 
             {isLoading ?
-                <React.Fragment>
-                    <Loader/>
-                    <ProgressBar current={currentProgress} max={100}/>
-                </React.Fragment> :
+                <Loader/> :
                 <React.Fragment>
                     {wasError ?
                         <p className='mt-2 text-danger'><small>{wasError}</small></p> :

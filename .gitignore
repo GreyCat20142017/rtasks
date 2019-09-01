@@ -23,3 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 .idea/
 
+/public/data/reactRepos.json
+/public/data/reactUser.json
+/public/data/nodeRepos.json
+/public/data/nodeUser.json

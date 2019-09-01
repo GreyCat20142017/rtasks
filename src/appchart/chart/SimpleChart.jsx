@@ -1,7 +1,7 @@
 import React, {useRef, useEffect, useState} from 'react';
 import {Chart} from 'chart.js';
 
-import DropDown from '../../common/dropdown/DropDown';
+import DropDown from '../../common/dropdown/DropDownHook';
 import {getDropDownData, transformToChartData} from '../chartfunctions';
 import {CHART_TYPES} from '../chartconstants';
 
@@ -30,7 +30,6 @@ const SimpleChart = ({data = [], chartTitle, chartFooter, onLegendClick, hidden 
         };
 
         return (
-
             <div className={hidden ? 'hidden' : ''}>
                 <h5 className='h5-responsive my-2'>{chartTitle}</h5>
                 <DropDown data={getDropDownData(CHART_TYPES)} dropdownSet={CHART_TYPES}

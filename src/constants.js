@@ -7,7 +7,7 @@ export const TASKS = {
     MAIN: {
         title: 'главная',
         component: null,
-        comment: 'Тренировка на котиках. React (CRA), hooks, react-paginate, lodash, MDB'
+        comment: 'Тренировка на котиках. React (CRA), hooks, react-paginate, lodash, chart.js, MDB'
     },
     TABLE: {
         title: 'таблица с данными', component: 'AppTable',

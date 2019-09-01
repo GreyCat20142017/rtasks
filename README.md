@@ -1,4 +1,4 @@
-Тренировка на котиках. React, hooks, react-paginate, lodash, MDB
+Тренировка на котиках. React, hooks, react-paginate, lodash, chart.js, MDB
 
 [Rtasks](https://greycat20142017.github.io/rtasks/) - это просто найденные на просторах интернета или придуманные задания под React.
 

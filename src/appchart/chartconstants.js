@@ -3,7 +3,7 @@ export const GIT_URLS = {
         name: 'Intensive-test',
         reposUrl: '/data/testRepos.json',
         userUrl: '/data/testUser.json',
-        title: 'Тестовые данные по интенсиву(из папки приложения)'
+        title: 'Тестовые данные по интенсиву (из папки приложения)'
     },
     TEST: {
         name: 'User-test',
@@ -41,3 +41,5 @@ export const GIT_LINK_PARTS = {
     PAGE: '/repos?page=',
     LIMIT: '&per_page=' + LIMIT
 };
+
+export const GIT_HOUR_LIMIT = 60;
