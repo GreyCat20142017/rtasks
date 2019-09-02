@@ -11,6 +11,18 @@ export const GIT_URLS = {
         userUrl: '/data/gitUser.json',
         title: 'Тестовые данные по пользователю github (из папки приложения).'
     }
+    // NODETEST: {
+    //     name: 'Node-test',
+    //     reposUrl: '/data/nodeRepos.json',
+    //     userUrl: '/data/nodeUser.json',
+    //     title: 'Тестовые данные по интенсиву (из папки приложения).'
+    // },
+    // REACTTEST: {
+    //     name: 'React-test',
+    //     reposUrl: '/data/reactRepos.json',
+    //     userUrl: '/data/reactUser.json',
+    //     title: 'Тестовые данные по интенсиву (из папки приложения).'
+    // }
 };
 export const CHART_COLORS = [
     'rgba(58, 226, 103, 0.2)',

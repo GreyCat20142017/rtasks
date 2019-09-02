@@ -58,19 +58,25 @@ const Details = ({details, unsetDetails, title = 'Информация о выб
 
     return (details ?
             <React.Fragment>
-                <div className='mt-4 p-3 shadow-lg'>
+                <div className='mt-4 p-3 shadow-lg fixed-bottom h-100 bg-white'>
+                    <button className='btn btn-sm btn-mdb-color' onClick={unsetDetails} type={'button'}
+                            title='Для возврата к предыдущему экрану - Еsc'>
+                        выйти из просмотра подробностей
+                    </button>
                     <h5 className='text-center my-3'>{title}</h5>
-                    <table className='table table-sm table-bordered'>
-                        <thead>
-                        <DetailsHeader isArray={Array.isArray(details)}/>
-                        </thead>
-                        <tbody>
-                        {Array.isArray(details) ?
-                            <ArrayRows details={details}/> :
-                            <ObjectRows details={details}/>}
-                        </tbody>
-                    </table>
-                    <button className='btn btn-sm btn-mdb-color' onClick={unsetDetails} type={'button'}>назад</button>
+                    <div className='overflow-auto h-100'>
+                        <table className='table table-sm table-bordered'>
+                            <thead>
+                            <DetailsHeader isArray={Array.isArray(details)}/>
+                            </thead>
+                            <tbody>
+                            {Array.isArray(details) ?
+                                <ArrayRows details={details}/> :
+                                <ObjectRows details={details}/>}
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </React.Fragment>
             : null

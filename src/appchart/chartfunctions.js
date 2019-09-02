@@ -1,21 +1,51 @@
 import {ACADEMY_PREFIX, CHART_COLORS, GIT_TYPES} from './chartconstants';
 
-export const parseRepoInfo = (repo) => {
-    const isAcademy = repo.html_url.includes(ACADEMY_PREFIX);
+const isDigit = (str) => (str.match(/[0-9]/));
+
+export const getIsAcademy = (text) => (text.includes(ACADEMY_PREFIX));
+
+const parseName = (name, isAcademy) => {
     let [academyId, project, intensiveNumber] = ['?', '?', '?'];
     if (isAcademy) {
-        const [id, ...rest] = repo.name.split('-');
-        academyId = id;
-        intensiveNumber = Array.isArray(rest) && rest.length > 0 && rest[rest.length - 1].match(/[0-9]/) ? rest[rest.length - 1] : '?';
-        project = (intensiveNumber === '?' ? rest : rest.slice(0, -1)).join('-');
+        const splitted = name.split('-');
+        switch (splitted.length) {
+            case 1: {
+                [academyId, project, intensiveNumber] = ['?', splitted[0], '?'];
+                break;
+            }
+            case 2: {
+                [academyId, project, intensiveNumber] = isDigit(splitted[0]) ? [splitted[0], splitted[1], '?'] : (
+                    isDigit(splitted[1]) ? ['?', splitted[0], splitted[1]] : ['?', splitted.join('-'), '?']
+                );
+                break;
+            }
+            default: {
+                const [first, ...rest] = splitted;
+                const middle = rest.slice(0, rest.length - 1);
+                const last = rest[rest.length - 1];
+                academyId = isDigit(first) ? first : '?';
+                intensiveNumber = isDigit(last) ? last : '?';
+                project = (academyId === '?' ? first + '-' : '') + middle.join('-') + (intensiveNumber === '?' ? '-' + last : '');
+            }
+        }
     }
+    return ({
+        academyId,
+        project,
+        intensiveNumber
+    });
+};
+
+export const parseRepoInfo = (repo) => {
+    const isAcademy = getIsAcademy(repo.html_url);
+    const parsedName = parseName(repo.name, isAcademy);
     return ({
         id: repo.id,
         name: repo.name,
         description: repo.description,
-        academyId,
-        project,
-        intensiveNumber,
+        academyId: parsedName.academyId,
+        project: parsedName.project,
+        intensiveNumber: parsedName.intensiveNumber,
         homepage: repo.homepage,
         language: repo.language
     });

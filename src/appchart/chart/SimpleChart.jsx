@@ -32,6 +32,7 @@ const SimpleChart = ({data = [], chartTitle, chartFooter, onLegendClick, hidden 
         return (
             <div className={hidden ? 'hidden' : ''}>
                 <h5 className='h5-responsive my-2'>{chartTitle}</h5>
+                <div className='d-flex mx-auto justify-content-center'>
                 <DropDown data={getDropDownData(CHART_TYPES)} dropdownSet={CHART_TYPES}
                           ariaInfo={'operation-dropdown'}
                           togglerText={chartType} callback={onChartTypeChange}
@@ -39,6 +40,7 @@ const SimpleChart = ({data = [], chartTitle, chartFooter, onLegendClick, hidden 
                               togglerCss: 'btn btn-light-green btn-sm dropdown-toggle',
                               linkCss: 'dropdown-item'
                           }}/>
+                </div>
                 <canvas ref={canvas} id="simpleChart" width="270" height="100"></canvas>
                 <p className='my-2'>{chartFooter}</p>
             </div>
