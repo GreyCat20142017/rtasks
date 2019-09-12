@@ -13,7 +13,8 @@ export const TASKS = {
         title: 'таблица с данными', component: 'AppTable',
         comment: 'Получение данных, сортировка, фильтрация, пагинация, вывод детальной информации по строке таблицы.'
     },
-    CHART: {title: 'ChartJS', component: 'AppChart', comment: 'Диаграмма по данным GitHub'}
+    CHART: {title: 'ChartJS', component: 'AppChart', comment: 'Диаграмма по данным GitHub'},
+    MAP: {title: 'карта', component: 'AppMap', comment: 'Карта c маршрутом'}
 };
 
-export const TASKS_ORDER = [TASKS.MAIN, TASKS.TABLE, TASKS.CHART];
+export const TASKS_ORDER = [TASKS.MAIN, TASKS.TABLE, TASKS.CHART, TASKS.MAP];

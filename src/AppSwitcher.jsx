@@ -2,6 +2,8 @@ import React from 'react';
 import {TASKS} from './constants';
 import AppTable from './apptable/AppTable';
 import AppChart from './appchart/AppChart';
+import AppMap from './appmap/AppMap';
+import ErrorBoundary from './errorboundary/ErrorBoundary';
 
 const AppSwitcher = ({component}) => {
     let rv = null;
@@ -12,6 +14,10 @@ const AppSwitcher = ({component}) => {
         }
         case TASKS.TABLE: {
             rv = <AppTable/>;
+            break;
+        }
+        case TASKS.MAP: {
+            rv = (<ErrorBoundary> <AppMap/> </ErrorBoundary>);
             break;
         }
         default:

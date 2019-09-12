@@ -7,7 +7,7 @@ function App() {
     const [task, setTask] = useState(0);
     return (
         <div className="container py-3">
-            <div className='col-12 col-md-8 mx-auto text-center'>
+            <div className='col-12 col-md-10 mx-auto text-center'>
 
                 <header>
                     <h3 className='h3-responsive text-center'>Разные задачи c использованием React</h3>
