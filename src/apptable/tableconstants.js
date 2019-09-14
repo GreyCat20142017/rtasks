@@ -1,3 +1,5 @@
+import {DATA_ROOT} from '../constants';
+
 export const DATA_URLS = {
     SMALL: {
         name: '20 слов',
@@ -10,7 +12,7 @@ export const DATA_URLS = {
         title: 'Данные из удаленного источника. Могут быть временно недоступны.'
     },
     TEST: {
-        name: 'тест', url: '/data/test.json',
+        name: 'тест', url: DATA_ROOT + 'data/test.json',
         title: 'Тестовые данные из папки приложения.'
     }
 };

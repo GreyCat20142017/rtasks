@@ -26,7 +26,7 @@ const Details = ({details, unsetDetails, title = 'Информация о выб
                 <div className='mt-4 p-3 shadow-lg fixed-bottom h-100 bg-white'>
                     <button className='btn btn-sm btn-mdb-color' onClick={unsetDetails} type={'button'}
                             title='Для возврата к предыдущему экрану - Еsc'>
-                        выйти из просмотра подробностей
+                        выйти из просмотра (ESC)
                     </button>
                     <h5 className='text-center my-3'>{title}</h5>
                     <div className='overflow-auto h-100'>

@@ -18,6 +18,7 @@ const AppSwitcher = ({component}) => {
         }
         case TASKS.MAP: {
             rv = (<ErrorBoundary> <AppMap/> </ErrorBoundary>);
+            // rv = (<ErrorBoundary> <button className='btn btn-mdb-color btn-sm' disabled>временно отключено</button> </ErrorBoundary>);
             break;
         }
         default:

@@ -49,3 +49,13 @@ code {
   -moz-filter: grayscale(0.9);
   -o-filter: grayscale(0.9);
 }
+
+.draggable {
+  cursor: pointer;
+}
+
+.on-top {
+  z-index: 100!important;
+  background-color: white;
+  min-height: 100%;
+}

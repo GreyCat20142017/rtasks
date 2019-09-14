@@ -10,6 +10,7 @@ const MapYandex = ({map, setMap, geoCollection, setGeoCollection, points, onChan
                 center: DEFAULT_POINT.coords,
                 zoom: 6
             });
+            mapa.behaviors.disable('scrollZoom');
             mapa.controls.remove('searchControl').remove('trafficControl').remove('geolocationControl').remove('typeSelector');
             setMap(mapa);
         };

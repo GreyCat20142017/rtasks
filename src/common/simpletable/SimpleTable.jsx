@@ -1,6 +1,22 @@
 import React from 'react';
 
-const getControl = (Control, callback, ind) => (<Control callback={callback} ind={ind}/>);
+const getControl = (Control, callback, buttonType, colInd, rowInd) => (
+    <Control key={rowInd + ' ' + colInd} callback={callback} buttonType={buttonType} ind={rowInd}/>
+);
+
+export const ArrayRows = ({details, controls = [], draggableRows}) => {
+    return (
+        <React.Fragment>
+            {details.map((item, rowInd) => (
+                <tr className={'d-flex align-items-center' + (draggableRows ? 'draggable' : '')} key={rowInd}>
+                    <td className='flex-grow-1'>{item}</td>
+                    <td className='d-flex align-items-center justify-content-center flex-nowrap h-100'>
+                        {controls.map((control, colInd) => getControl(control.Control, control.callback, control.buttonType, colInd, rowInd))}
+                    </td>
+                </tr>
+            ))}
+        </React.Fragment>);
+};
 
 export const DetailsHeader = ({isArray}) => (isArray ?
         <tr>
@@ -26,30 +42,14 @@ export const ObjectRows = ({details}) => {
         </React.Fragment>);
 };
 
-export const ArrayRows = ({details, controlColumns = []}) => {
-
-    return (
-        <React.Fragment>
-            {details.map((item, ind) => (
-                <tr key={ind}>
-                    <td>{item}</td>
-                    {controlColumns.map((control, index) =>
-                        <td key={index}>
-                            {getControl(control.Control, control.callback, ind)}
-                        </td>)}
-                </tr>
-            ))}
-        </React.Fragment>);
-};
-
-const SimpleTable = ({details, noHeader = false, controlColumns = []}) => (
-    <table className='table table-sm table-bordered'>
+const SimpleTable = ({details, noHeader = false, controls = [], draggableRows = false}) => (
+    <table className='table table-sm table-bordered w-100'>
         <thead>
         {noHeader ? null : <DetailsHeader isArray={Array.isArray(details)}/>}
         </thead>
         <tbody>
         {Array.isArray(details) ?
-            <ArrayRows details={details} controlColumns={controlColumns}/> :
+            <ArrayRows details={details} controls={controls} draggableRows={draggableRows}/> :
             <ObjectRows details={details}/>}
         </tbody>
     </table>

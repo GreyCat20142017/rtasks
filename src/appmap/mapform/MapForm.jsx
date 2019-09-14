@@ -1,17 +1,18 @@
 import React, {useState} from 'react';
 
 import SimpleTable from '../../common/simpletable/SimpleTable';
-
 import {GEO_REG_EXP} from '../mapconstants';
-import {KEYCODES} from '../../constants';
+import {CONTROL_BUTTON_TYPES, KEYCODES} from '../../constants';
+import {getButtonTypeClass} from '../../functions';
 
-const DeleteButton = ({callback, ind}) => (
-    <button className='btn btn-mdb-color btn-sm m-0 py-1 px-2' type='button' onClick={() => callback(ind)}>
-        &#10008;<span className='visually-hidden'>удалить</span>
+const ControlButton = ({callback, buttonType, ind}) => (
+    <button className={'btn btn-sm m-0 py-1 px-2 mx-1 ' + getButtonTypeClass(buttonType)}
+            type='button' title={buttonType.title} onClick={() => callback(ind)}>
+        <span>{buttonType.icon}</span><span className='visually-hidden'>{buttonType.title}</span>
     </button>
 );
 
-const MapForm = ({routePoints, onAddPoint, onDeletePoint}) => {
+const MapForm = ({routePoints, onAddPoint, onDeletePoint, onUp, onDown}) => {
     const [inputValue, setInputValue] = useState('');
     const [wasInput, setWasInput] = useState(false);
 
@@ -31,19 +32,26 @@ const MapForm = ({routePoints, onAddPoint, onDeletePoint}) => {
     };
 
     return (
-        <React.Fragment>
+        <div className='w-100'>
             <input
-                className={'form-control' + (inputValue.trim() === '' && !wasInput) ? 'is_valid' : 'is-invalid'}
+                className={'form-control ' + (inputValue.trim() === '' && !wasInput) ? 'is_valid' : 'is-invalid'}
                 value={inputValue} pattern={GEO_REG_EXP}
                 title='Название для новой точки маршрута. Enter - для завершения ввода.'
                 placeholder='... новая точка маршрута' required
                 type='text' id='idGitUser' onChange={(evt) => setInputValue(evt.target.value)}
                 onKeyDown={onEnterPress}/>
-            <SimpleTable details={routePoints.map(item => item.name)} noHeader={true}
-                         controlColumns={[{Control: DeleteButton, callback: onDeletePoint, title: ''}]}/>
-            <p><small>Новые точки маршрута добавляются в центр карты для перемещения в нужную точку.</small></p>
+
+            <SimpleTable details={routePoints.map(item => item.name)} noHeader={true} draggableRows={true}
+                         controls={[
+                             {Control: ControlButton, buttonType: CONTROL_BUTTON_TYPES.DELETE, callback: onDeletePoint},
+                             {Control: ControlButton, buttonType: CONTROL_BUTTON_TYPES.UP, callback: onUp},
+                             {Control: ControlButton, buttonType: CONTROL_BUTTON_TYPES.DOWN, callback: onDown}
+                         ]}/>
+
+            <p><small>Новые точки маршрута добавляются в центр карты для последующего перемещения в нужную точку
+                карты.</small></p>
             <p><small>Ибо геокодинг, кажется, только по ключу.</small></p>
-        </React.Fragment>
+        </div>
     );
 };
 
