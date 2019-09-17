@@ -14,7 +14,7 @@ export const TASKS = {
         comment: 'Получение данных, сортировка, фильтрация, пагинация, вывод детальной информации по строке таблицы.'
     },
     CHART: {title: 'ChartJS', component: 'AppChart', comment: 'Диаграмма по данным GitHub'},
-    MAP: {title: 'карта', component: 'AppMap', comment: 'Карта c маршрутом'}
+    MAP: {title: 'карта', component: 'AppMap', comment: 'Карта c маршрутом, React DnD'}
 };
 
 export const TASKS_ORDER = [TASKS.MAIN, TASKS.TABLE, TASKS.CHART, TASKS.MAP];
@@ -31,4 +31,8 @@ export const CONTROL_BUTTON_TYPES = {
     DELETE: {title: 'удалить', icon: '\u{2718}'},
     UP: {title: 'вверх', icon: '\u{2B06}'},
     DOWN: {title: 'вниз', icon: '\u{2B07}'}
+};
+
+export const DND_TYPES = {
+    ROW: 'ROW'
 }

@@ -12,4 +12,7 @@ export const DEFAULT_POINTS = [
 
 export const GEO_REG_EXP = /[0-9]{1-2}:[0-9]{1-3}/;
 
-
+export const YANDEX_PLACEMARK_PRESETS = {
+  START_POINT: 'islands#redStretchyIcon',
+  COMMON_POINT: 'islands#blueStretchyIcon'
+};

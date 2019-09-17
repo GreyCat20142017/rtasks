@@ -1,4 +1,4 @@
-import {DELIMITER} from './mapconstants';
+import {DELIMITER, YANDEX_PLACEMARK_PRESETS} from './mapconstants';
 
 export const getYmapsPoint = (point, ind) => {
     return new window.ymaps.GeoObject(
@@ -13,7 +13,7 @@ export const getYmapsPoint = (point, ind) => {
             }
         },
         {
-            preset: 'islands#blueStretchyIcon',
+            preset: ind === 0 ?  YANDEX_PLACEMARK_PRESETS.START_POINT: YANDEX_PLACEMARK_PRESETS.COMMON_POINT,
             draggable: true,
             isMarker: true,
             ind: ind

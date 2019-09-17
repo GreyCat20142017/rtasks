@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
+import update from 'immutability-helper'
+
+import MapYandex from './MapYandex';
 
 import MapForm from './mapform/MapForm';
-import {DEFAULT_POINTS, DEFAULT_POINT} from './mapconstants';
-import MapYandex from './MapYandex';
-// import {isPointInside} from './mapfunctions';
 import {getPlacemarkTitle} from './mapfunctions';
 import {moveUp, moveDown} from '../functions';
+// import {isPointInside} from './mapfunctions';
+import {DEFAULT_POINTS, DEFAULT_POINT} from './mapconstants';
 import {KEYCODES} from '../constants';
 
 
@@ -72,11 +74,20 @@ const AppMap = () => {
         }
     };
 
+    const moveRow = (dragIndex, hoverIndex) => {
+        const draggedPoint = routePoints[dragIndex]
+        setRoutePoints(
+            update(routePoints, {
+                $splice: [[dragIndex, 1], [hoverIndex, 0, draggedPoint]],
+            }),
+        )
+    };
+
     return (
         <div className='row'>
             <div className={showSidebar ? 'd-block col-11 h-100 position-fixed fixed-center on-top' : 'd-none d-md-block col-4'}>
                 <MapForm routePoints={routePoints} onDeletePoint={onDeletePoint} onAddPoint={onAddPoint}
-                         onUp={onUp} onDown={onDown}/>
+                         onUp={onUp} onDown={onDown} moveRow={moveRow}/>
                 {showSidebar ?
                     <button className='btn btn-mdb-color btn-sm' onClick={() => setShowSidebar(false)}>
                         закрыть форму (Esc)

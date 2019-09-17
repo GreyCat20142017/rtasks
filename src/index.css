@@ -54,6 +54,14 @@ code {
   cursor: pointer;
 }
 
+.draggable:first-child  {
+  border-left: 3px solid red;
+}
+
+.draggable:hover {
+  background-color: rgba(89, 105, 141, 0.1);
+}
+
 .on-top {
   z-index: 100!important;
   background-color: white;

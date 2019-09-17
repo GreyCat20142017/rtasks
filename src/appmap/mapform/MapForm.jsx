@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import {DndProvider} from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 import SimpleTable from '../../common/simpletable/SimpleTable';
 import {GEO_REG_EXP} from '../mapconstants';
@@ -12,7 +14,7 @@ const ControlButton = ({callback, buttonType, ind}) => (
     </button>
 );
 
-const MapForm = ({routePoints, onAddPoint, onDeletePoint, onUp, onDown}) => {
+const MapForm = ({routePoints, onAddPoint, onDeletePoint, onUp, onDown, moveRow}) => {
     const [inputValue, setInputValue] = useState('');
     const [wasInput, setWasInput] = useState(false);
 
@@ -41,12 +43,14 @@ const MapForm = ({routePoints, onAddPoint, onDeletePoint, onUp, onDown}) => {
                 type='text' id='idGitUser' onChange={(evt) => setInputValue(evt.target.value)}
                 onKeyDown={onEnterPress}/>
 
-            <SimpleTable details={routePoints.map(item => item.name)} noHeader={true} draggableRows={true}
+                <DndProvider backend={HTML5Backend}>
+            <SimpleTable details={routePoints.map(item => item.name)} noHeader={true} draggableRows={true} moveRow={moveRow}
                          controls={[
                              {Control: ControlButton, buttonType: CONTROL_BUTTON_TYPES.DELETE, callback: onDeletePoint},
                              {Control: ControlButton, buttonType: CONTROL_BUTTON_TYPES.UP, callback: onUp},
                              {Control: ControlButton, buttonType: CONTROL_BUTTON_TYPES.DOWN, callback: onDown}
                          ]}/>
+                </DndProvider>
 
             <p><small>Новые точки маршрута добавляются в центр карты для последующего перемещения в нужную точку
                 карты.</small></p>
