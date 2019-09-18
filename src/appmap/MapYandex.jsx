@@ -20,7 +20,6 @@ const MapYandex = ({map, setMap, geoCollection, setGeoCollection, points, onChan
     });
 
     useEffect(() => {
-
         if (map && window.ymaps) {
             let geo = new window.ymaps.GeoObjectCollection({}, {
                 preset: 'islands#redCircleIcon',

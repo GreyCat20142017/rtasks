@@ -43,7 +43,7 @@ code {
   min-height: 400px;
 }
 
-.ymaps-2-1-74-ground-pane, .leaflet-tile-pane *, .leaflet-marker-pane * {
+.ymaps-2-1-74-ground-pane, .leaflet-tile-pane * {
   filter: grayscale(0.9);
   -webkit-filter: grayscale(0.9);
   -moz-filter: grayscale(0.9);
@@ -66,4 +66,33 @@ code {
   z-index: 100!important;
   background-color: white;
   min-height: 100%;
+}
+
+.icon-2gis {
+  position: relative;
+  top: -30px;
+  left: -10px;
+  border-radius: 50% 50% 50% 0;
+  padding: 5px;
+  min-height: 30px;
+  min-width: 30px;
+  background-color: blue;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-45deg);
+}
+
+.icon-2gis span {
+  transform: rotate(45deg);
+}
+
+.icon-2gis--first {
+  background-color: red;
+}
+
+.icon-2gis:hover {
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.4);
 }
