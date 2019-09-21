@@ -1,10 +1,21 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+
+import firebase from 'firebase/app';
+import {firebaseConfig} from './config';
 
 import AppSwitcher from './AppSwitcher';
 import {TASKS_ORDER} from './constants';
 
 function App() {
     const [task, setTask] = useState(0);
+    useEffect(()=> {
+        try {
+            firebase.initializeApp(firebaseConfig);
+        } catch (e) {
+
+        }
+    });
+    
     return (
         <div className="container py-3">
             <div className='col-12 col-md-10 mx-auto text-center'>

@@ -17,7 +17,7 @@ const MapYandex = ({map, setMap, geoCollection, setGeoCollection, points, onChan
         if (!map && window.ymaps) {
             window.ymaps.ready(initMap);
         }
-    });
+    }, [map, setMap]);
 
     useEffect(() => {
         if (map && window.ymaps) {

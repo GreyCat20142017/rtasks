@@ -27,3 +27,6 @@ yarn-error.log*
 /public/data/reactUser.json
 /public/data/nodeRepos.json
 /public/data/nodeUser.json
+
+/src/config.js
+/src/routes.js

@@ -18,9 +18,10 @@ export const TASKS = {
         title: 'таблица с данными', component: 'AppTable',
         comment: 'Получение данных, сортировка, фильтрация, пагинация, вывод детальной информации по строке таблицы.'
     },
-    CHART: {title: 'ChartJS', component: 'AppChart', comment: 'Диаграмма по данным GitHub'},
+    CHART: {title: 'ChartJS', component: 'AppChart', comment: 'Диаграмма по данным GitHub, promise'},
     MAP_YANDEX: {title: 'карта Yandex', component: 'AppMap', comment: 'Карта c маршрутом, React-DnD', additionalParam: MAP_TYPES.YANDEX},
-    MAP_2GIS: {title: 'карта 2Gis', component: 'AppMap', comment: 'Карта c маршрутом, React-DnD', additionalParam: MAP_TYPES.GIS}
+    MAP_2GIS: {title: 'карта 2Gis', component: 'AppMap', comment: 'Карта c маршрутом, React-DnD', additionalParam: MAP_TYPES.GIS},
+    FIREBASE: {title: 'Firebase', component: 'AppFirebase', comment: 'Firebase (регистрация, аутентификация, получение данных). Axios, async/await'}
 };
 
 export const TASKS_ORDER = [...Object.keys(TASKS).map(key => TASKS[key])];

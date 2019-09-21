@@ -9,7 +9,8 @@ const Map2Gis = ({map, setMap, geoCollection, setGeoCollection, points, onChange
             window.DG.then(function () {
                 const mapa = window.DG.map('id-map-api', {
                     'center': DEFAULT_POINT.coords,
-                    'zoom': 6
+                    'zoom': 6,
+                    'scrollWheelZoom': false
                 });
                 setMap(mapa);
             });
@@ -17,7 +18,7 @@ const Map2Gis = ({map, setMap, geoCollection, setGeoCollection, points, onChange
         if (!map) {
             initMap();
         }
-    });
+    }, [map, setMap]);
 
     useEffect(() => {
             if (map && !geoCollection) {

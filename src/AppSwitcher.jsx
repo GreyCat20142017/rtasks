@@ -3,6 +3,7 @@ import {MAP_TYPES, TASKS} from './constants';
 import AppTable from './apptable/AppTable';
 import AppChart from './appchart/AppChart';
 import AppMap from './appmap/AppMap';
+import AppFirebase from './appfirebase/AppFirebase';
 import ErrorBoundary from './errorboundary/ErrorBoundary';
 
 const AppSwitcher = ({component}) => {
@@ -20,14 +21,16 @@ const AppSwitcher = ({component}) => {
             // rv = (<ErrorBoundary> <AppMap mapType={MAP_TYPES.YANDEX} mapInit={null} geoInit={null}/> </ErrorBoundary>);
             //todo  Нужно подумать как избежать проблем с совместным использованием карт 2Gis и Yandex
             // при подобном частичном переиспользовании кода
-            rv = (<ErrorBoundary>
-                <button className='btn btn-mdb-color btn-sm' disabled>временно отключено</button>
-            </ErrorBoundary>);
+            rv = (<button className='btn btn-mdb-color btn-sm' disabled>временно отключено</button>);
             break;
         }
         case TASKS.MAP_2GIS: {
             rv = (<ErrorBoundary> <AppMap mapType={MAP_TYPES.GIS} mapInit={null} geoInit={null}/> </ErrorBoundary>);
-            // rv = (<ErrorBoundary> <button className='btn btn-mdb-color btn-sm' disabled>временно отключено</button> </ErrorBoundary>);
+            // rv = (<button className='btn btn-mdb-color btn-sm' disabled>временно отключено</button>);
+            break;
+        }
+        case TASKS.FIREBASE: {
+            rv = (<ErrorBoundary message={'Что-то не то с Firebase получилось.'}><AppFirebase/></ErrorBoundary>);
             break;
         }
         default:
