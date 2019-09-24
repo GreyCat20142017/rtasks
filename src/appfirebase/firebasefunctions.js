@@ -1,19 +1,16 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
-export const getCurrentUserId = () => {
-    const user = firebase.auth().currentUser;
-    return user ? user.uid : null;
+export const getUser = (user) => {
+    return user ? ({
+        displayName: user.displayName,
+        uid: user.uid,
+        email: user.email
+    }) : null;
 };
 
-export const getCurrentUserInfo = () => {
-    const user = firebase.auth().currentUser;
-    console.log(user);
-    return user ?
-        ({
-            name: user.displayName,
-            email: user.email,
-            id: user.uid
-        }) :
-        null;
-};
+export const getCurrentUserInfo = () => getUser(firebase.auth().currentUser);
+
+export const getAuthUserProperty = (user, property = 'displayName') => (
+    user ? user[property] : 'Гость'
+);

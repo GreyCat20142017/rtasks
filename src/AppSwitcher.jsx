@@ -1,46 +1,38 @@
-import React from 'react';
-import {MAP_TYPES, TASKS} from './constants';
-import AppTable from './apptable/AppTable';
-import AppChart from './appchart/AppChart';
-import AppMap from './appmap/AppMap';
-import AppFirebase from './appfirebase/AppFirebase';
-import ErrorBoundary from './errorboundary/ErrorBoundary';
+import React, {useContext} from 'react';
+import {A, useRoutes} from 'hookrouter';
 
-const AppSwitcher = ({component}) => {
-    let rv = null;
-    switch (component) {
-        case TASKS.CHART: {
-            rv = <AppChart/>;
-            break;
-        }
-        case TASKS.TABLE: {
-            rv = <AppTable/>;
-            break;
-        }
-        case TASKS.MAP_YANDEX: {
-            // rv = (<ErrorBoundary> <AppMap mapType={MAP_TYPES.YANDEX} mapInit={null} geoInit={null}/> </ErrorBoundary>);
-            //todo  Нужно подумать как избежать проблем с совместным использованием карт 2Gis и Yandex
-            // при подобном частичном переиспользовании кода
-            rv = (<button className='btn btn-mdb-color btn-sm' disabled>временно отключено</button>);
-            break;
-        }
-        case TASKS.MAP_2GIS: {
-            rv = (<ErrorBoundary> <AppMap mapType={MAP_TYPES.GIS} mapInit={null} geoInit={null}/> </ErrorBoundary>);
-            // rv = (<button className='btn btn-mdb-color btn-sm' disabled>временно отключено</button>);
-            break;
-        }
-        case TASKS.FIREBASE: {
-            rv = (<ErrorBoundary message={'Что-то не то с Firebase получилось.'}><AppFirebase/></ErrorBoundary>);
-            break;
-        }
-        default:
-            rv = <React.Fragment>
-                <p className='mt-3'>Просто найденные на просторах интернета задания по React. </p>
-                <p>Без какой-либо общей идеи и реальной цели.</p>
-                <p>Исключительно для внесения разнообразия в учебные задачи.</p>
-            </React.Fragment>;
-    }
-    return rv;
+import UserContext from './appfirebase/UserContext';
+
+import NotFound from './common/NotFound';
+import {TASKS, TASKS_ORDER} from './constants';
+import {routes} from './routes';
+import {taskSearch, getAClassName} from './functions';
+import UserMenu from './common/UserMenu';
+
+const AppSwitcher = () => {
+    const routeResult = useRoutes(routes);
+    const task = taskSearch(window.location.pathname);
+    const {authUser} = useContext(UserContext);
+
+    return (
+        <React.Fragment>
+            <header>
+                <h3 className='h3-responsive text-center'>Разные задачи c использованием React</h3>
+                {TASKS_ORDER.map((item, ind) =>
+                    <A href={TASKS_ORDER[ind]['href']}
+                       className={getAClassName(TASKS_ORDER[ind].href)}
+                       key={ind}
+                       title={TASKS_ORDER[ind]['comment']}>{TASKS_ORDER[ind]['title']}
+                    </A>
+                )}
+                <UserMenu user={authUser}/>
+            </header>
+            <hr/>
+            <p><small>{TASKS[task]['comment']}</small></p>
+            <hr/>
+            {routeResult || <NotFound/>}
+        </React.Fragment>
+    );
 };
 
 export default AppSwitcher;

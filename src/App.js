@@ -1,46 +1,36 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import firebase from 'firebase/app';
+import 'firebase/auth';
+
+import UserContext from './appfirebase/UserContext';
+import {getUser} from './appfirebase/firebasefunctions';
+import AppSwitcher from './AppSwitcher';
+
 import {firebaseConfig} from './config';
 
-import AppSwitcher from './AppSwitcher';
-import {TASKS_ORDER} from './constants';
-
-function App() {
-    const [task, setTask] = useState(0);
-    useEffect(()=> {
-        try {
-            firebase.initializeApp(firebaseConfig);
-        } catch (e) {
-
-        }
-    });
-    
-    return (
-        <div className="container py-3">
-            <div className='col-12 col-md-10 mx-auto text-center'>
-
-                <header>
-                    <h3 className='h3-responsive text-center'>Разные задачи c использованием React</h3>
-
-                    {TASKS_ORDER.map((item, ind) =>
-                        <button className={'btn btn-sm ' + (ind === task ? '' : ' btn-mdb-color ')} key={ind} type='button'
-                                title={TASKS_ORDER[ind]['comment']}
-                                onClick={() => setTask(ind)}>{TASKS_ORDER[ind]['title']}</button>
-                    )}
-
-                    <hr/>
-                    <p><small>{TASKS_ORDER[task]['comment']}</small></p>
-                    <hr/>
-                </header>
-
-                <main>
-                    <AppSwitcher component={TASKS_ORDER[task]}/>
-                </main>
-
-            </div>
-        </div>
-    );
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
 }
+
+const App = () => {
+    const [authUser, setUser] = useState(null);
+
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged((user) => setUser(getUser(user)));
+    }, []);
+
+    return (
+        <UserContext.Provider value={{authUser, setUser}}>
+            <div className="container py-3">
+                <div className='col-12 col-md-10 mx-auto text-center'>
+                    <main>
+                        <AppSwitcher/>
+                    </main>
+                </div>
+            </div>
+        </UserContext.Provider>
+    );
+};
 
 export default App;

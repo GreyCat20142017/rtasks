@@ -9,20 +9,23 @@ const LinkDrop = ({link, css, clickHandler}) => (
     </a>
 );
 
-const ButtonDrop = ({link, css, clickHandler}) => (
-    <button className={css.linkCss}
-            type='button' onClick={() => clickHandler(link.key)}
-            key={link.key}>
-        {link.text}
-    </button>
-);
+const ButtonDrop = ({link, css, clickHandler}) => {
+    return (
+        <button className={css.linkCss}
+                type='button' onClick={() => clickHandler(link.key)}
+                key={link.key}>
+            {link.text}
+        </button>
+    );
+};
 
 /**
  * для передачи в props DropDown нужно подготовить массив объектов вида
- * {key: 'key, link: 'link', text: 'text'}
+ * {key: 'key', link: 'link', text: 'text'}
  */
 const DropDown = ({
-                      data = [], togglerText = 'перейти...', ariaInfo = 'dropdown', dropdownSet = [], callback = null,
+                      data = [], togglerText = 'перейти...', ariaInfo = 'dropdown', dropdownSet = [],
+                      callback = null, routerLink = false,
                       css = {
                           togglerCss: 'btn dropdown-toggle btn-block',
                           linkCss: 'dropdown-item w-100'
@@ -50,6 +53,13 @@ const DropDown = ({
         if (callback) {
             setIsOpen(false);
             callback(dropdownSet[key]);
+        }
+    };
+
+    const onRouterLinkClickHandler = (key) => {
+        if (callback) {
+            setIsOpen(false);
+            callback(key);
         }
     };
 
@@ -89,8 +99,9 @@ const DropDown = ({
             <div className={'dropdown-menu w-100' + dropOpenedClass} aria-labelledby={ariaInfo}>
                 {links.map((link, ind) =>
                     (callback ?
-                        <ButtonDrop key={ind} link={link} css={css} clickHandler={onButtonClickHandler}/> :
-                        <LinkDrop key={ind} link={link} css={css} clickHandler={onClickHandler}/>)
+                        <ButtonDrop key={ind} link={link} css={css}
+                                    clickHandler={routerLink ? onRouterLinkClickHandler : onButtonClickHandler}/> :
+                        <LinkDrop key={ind} link={link} css={css}/>)
                 )}
             </div>
         </div>

@@ -12,22 +12,28 @@ export const TASKS = {
     MAIN: {
         title: 'главная',
         component: null,
-        comment: 'Тренировка на котиках. React (CRA), hooks, react-paginate, lodash, chart.js, MDB, Яндекс-карты, React-DnD'
+        comment: 'Тренировка на котиках. React (hooks) - CRA, react-paginate, lodash, chart.js, MDB, API карт, React-DnD, Firebase, hookrouter',
+        href: '/'
     },
     TABLE: {
         title: 'таблица с данными', component: 'AppTable',
-        comment: 'Получение данных, сортировка, фильтрация, пагинация, вывод детальной информации по строке таблицы.'
+        comment: 'Получение данных, сортировка, фильтрация, пагинация, вывод детальной информации по строке таблицы.',
+        href: '/table'
     },
-    CHART: {title: 'ChartJS', component: 'AppChart', comment: 'Диаграмма по данным GitHub, promise'},
-    MAP_YANDEX: {title: 'карта Yandex', component: 'AppMap', comment: 'Карта c маршрутом, React-DnD', additionalParam: MAP_TYPES.YANDEX},
-    MAP_2GIS: {title: 'карта 2Gis', component: 'AppMap', comment: 'Карта c маршрутом, React-DnD', additionalParam: MAP_TYPES.GIS},
-    FIREBASE: {title: 'Firebase', component: 'AppFirebase', comment: 'Firebase (регистрация, аутентификация, получение данных). Axios, async/await'}
+    CHART: {title: 'ChartJS', component: 'AppChart', comment: 'Диаграмма, вывод детальной информации. API GitHub, promise', href: '/chart'},
+    MAP_YANDEX: {title: 'карта Yandex', component: 'AppMap', comment: 'Карта c маршрутом. API Yandex-карт, React-DnD', additionalParam: MAP_TYPES.YANDEX,
+        href: '/mapyandex'},
+    MAP_2GIS: {title: 'карта 2Gis', component: 'AppMap', comment: 'Карта c маршрутом. API 2Gis, React-DnD', additionalParam: MAP_TYPES.GIS,
+        href: '/map2gis'},
+    FIREBASE: {title: 'Firebase', component: 'AppFirebase', comment: 'Firebase (регистрация, аутентификация, получение данных). Axios, async/await',
+        href: '/firebase'}
 };
 
 export const TASKS_ORDER = [...Object.keys(TASKS).map(key => TASKS[key])];
 
 const url = window.location.origin;
 export const DATA_ROOT = (url.match(/github\.io/gi)) ? '' : '/';
+export const APP_ROOT = ((url.match(/github\.io/gi)) ? '/rtasks' : '');
 
 export const CONTROL_BUTTON_TYPES = {
     DELETE: {title: 'удалить', icon: '\u{2718}'},
@@ -39,3 +45,4 @@ export const DND_TYPES = {
     ROW: 'ROW'
 };
 
+export const MDB_COLOR='#59698d';
