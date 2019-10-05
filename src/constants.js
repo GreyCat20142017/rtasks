@@ -8,6 +8,8 @@ export const MAP_TYPES = {
     GIS: '2GIS'
 };
 
+export const DISABLED_COMPONENTS = [MAP_TYPES.YANDEX];
+
 export const TASKS = {
     MAIN: {
         title: 'главная',
@@ -29,10 +31,11 @@ export const TASKS = {
         href: '/firebase'}
 };
 
-export const TASKS_ORDER = [...Object.keys(TASKS).map(key => TASKS[key])];
+export const TASKS_ORDER = [...Object.keys(TASKS).map(key => TASKS[key])].filter(
+    task => !(task.additionalParam) || (DISABLED_COMPONENTS.indexOf(task.additionalParam) === -1));;
 
 const url = window.location.origin;
-export const DATA_ROOT = (url.match(/github\.io/gi)) ? '' : '/';
+export const DATA_ROOT = (url.match(/github\.io/gi)) ? '' : '';
 export const APP_ROOT = ((url.match(/github\.io/gi)) ? '/rtasks' : '');
 
 export const CONTROL_BUTTON_TYPES = {

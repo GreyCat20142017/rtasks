@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {DEFAULT_POINT} from './mapconstants';
 import {getYmapsPoint, getYMapsRoute} from './mapfunctions';
+import Loader from '../common/loader/Loader';
 
 const MapYandex = ({map, setMap, geoCollection, setGeoCollection, points, onChangeMarkerCoords}) => {
 
@@ -20,7 +21,7 @@ const MapYandex = ({map, setMap, geoCollection, setGeoCollection, points, onChan
     }, [map, setMap]);
 
     useEffect(() => {
-        if (map && window.ymaps) {
+        if (map && window.ymaps && !geoCollection) {
             let geo = new window.ymaps.GeoObjectCollection({}, {
                 preset: 'islands#redCircleIcon',
                 strokeWidth: 4,
@@ -29,7 +30,7 @@ const MapYandex = ({map, setMap, geoCollection, setGeoCollection, points, onChan
             map.geoObjects.add(geo);
             setGeoCollection(geo);
         }
-    }, [map, setGeoCollection]);
+    }, [map, geoCollection, setGeoCollection]);
 
 
     useEffect(() => {
@@ -54,7 +55,7 @@ const MapYandex = ({map, setMap, geoCollection, setGeoCollection, points, onChan
             const polyline = getYMapsRoute(points);
             geoCollection.add(polyline);
         };
-        if (geoCollection) {
+        if (map && window.ymaps && geoCollection) {
             refreshMap();
         }
     }, [points, geoCollection, map, onChangeMarkerCoords]);
@@ -62,6 +63,7 @@ const MapYandex = ({map, setMap, geoCollection, setGeoCollection, points, onChan
 
     return (
         <div className='map map--api' id='id-map-api'>
+            <Loader message={'Загрузка карты...'}/>
         </div>
     );
 };

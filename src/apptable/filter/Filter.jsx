@@ -11,6 +11,13 @@ const Filter = ({onFilterApply}) => {
         }
     };
 
+    const clearFilter = () => {
+        if (inputValue !== '') {
+            setInputValue('');
+            onFilterApply('');
+        }
+    };
+
     return (
         <div className='md-form d-flex align-items-baseline mt-3 mb-2'>
             <label htmlFor='idFilter'>{inputValue.trim() === '' ? 'Текст для поиска' : ''}</label>
@@ -22,7 +29,7 @@ const Filter = ({onFilterApply}) => {
                         title='выполнить поиск подстроки во всех полях таблицы'>
                     поиск
                 </button>
-                <button className={'btn btn-mdb-color btn-sm ml-1'} type='button' onClick={() => setInputValue('')}
+                <button className={'btn btn-mdb-color btn-sm ml-1'} type='button' onClick={clearFilter}
                         title='сбросить выражение поиска'>
                     &#10008;<span className='visually-hidden'>сбросить</span>
                 </button>

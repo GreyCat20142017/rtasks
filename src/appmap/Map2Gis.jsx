@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 
 import {DEFAULT_POINT} from './mapconstants';
 import {getHtmlIcon, getPlacemarkTitle} from './mapfunctions';
+import Loader from '../common/loader/Loader';
 
 const Map2Gis = ({map, setMap, geoCollection, setGeoCollection, points, onChangeMarkerCoords}) => {
     useEffect(() => {
@@ -67,6 +68,7 @@ const Map2Gis = ({map, setMap, geoCollection, setGeoCollection, points, onChange
 
     return (
         <div className='map map--api' id='id-map-api'>
+            <Loader message={'Загрузка карты...'}/>
         </div>
     );
 };
