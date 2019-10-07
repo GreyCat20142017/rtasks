@@ -1,36 +1,25 @@
 import React, {useState} from 'react';
-import {orderBy, chunk} from 'lodash';
+import {orderBy} from 'lodash';
 
 import Loader from '../common/loader/Loader';
-import Table from './table/Table';
-import Filter from './filter/Filter';
-import Details from '../common/details/Details';
-import {DATA_URLS, PAGE_LIMIT, SORT_DIRECTIONS} from './tableconstants';
+import TableWrapper from '../common/compoundtable/table/TableWrapper';
 
-const containsPattern = (itemObject, pattern) => (
-    Object.keys(itemObject).reduce((rv, current) => (rv || itemObject[current].toLowerCase().includes(pattern.toLowerCase())), false)
-);
+import {DATA_URLS} from './tableconstants';
+import {SORT_DIRECTIONS} from '../common/compoundtable/tableconstants';
 
-const getPreparedData = (content, sortField, sortDirection, filterValue) => (
-    chunk(content.filter(item => containsPattern(item, filterValue)), PAGE_LIMIT)
-);
+const defaultSortDirection = SORT_DIRECTIONS.ASC;
 
 const AppTable = (props) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [content, setContent] = useState([]);
     const [wasError, setWasError] = useState(false);
-    const [filterValue, setFilterValue] = useState('');
-    const [currentPage, setCurrentPage] = useState(0);
+    const [content, setContent] = useState([]);
     const [sortField, setSortField] = useState('');
-    const [sortDirection, setSortDirection] = useState(SORT_DIRECTIONS.ASC);
-    const [currentDetails, setCurrentDetails] = useState(null);
-    const preparedData = getPreparedData([...content], sortField, sortDirection, filterValue);
 
-    const basicReset = () => {
-        setCurrentPage(0);
-        setCurrentDetails(null);
-        setFilterValue('');
+    const stateReset = (data = [], loading = false, error = false, field = '') => {
+        setContent(data);
         setIsLoading(false);
+        setSortField(sortField);
+        setWasError(error);
     };
 
     const getData = (url, canceled = false) => {
@@ -42,34 +31,17 @@ const AppTable = (props) => {
                 if (!canceled) {
                     const defaultSortField = data.content.length > 0 && Object.keys(data.content[0]).length > 0 ?
                         Object.keys(data.content[0])[0] : '';
-                    setContent(orderBy([...data.content], defaultSortField, sortDirection));
+                    setContent(orderBy([...data.content], defaultSortField, defaultSortDirection));
                     setWasError(false);
                     setSortField(defaultSortField);
-                    basicReset();
+                    stateReset(orderBy([...data.content], defaultSortField, defaultSortDirection), false, false, defaultSortField);
                 }
             })
             .catch(error => {
                 if (!canceled) {
-                    setWasError(true);
-                    setContent([]);
-                    basicReset();
+                    stateReset([], false, true, '');
                 }
             });
-    };
-
-    const onTableSort = (column) => (setSortField(column));
-
-    const onPageChange = (page) => (setCurrentPage(page));
-
-    const onRowClick = (rowData) => (setCurrentDetails(rowData));
-
-    const onDirectionChange = () => (
-        setSortDirection(sortDirection === SORT_DIRECTIONS.ASC ? SORT_DIRECTIONS.DESC : SORT_DIRECTIONS.ASC)
-    );
-
-    const onFilterApply = (value) => {
-        setFilterValue(value);
-        setCurrentPage(0);
     };
 
     return (
@@ -87,16 +59,11 @@ const AppTable = (props) => {
             {wasError ? <p className='p-2 text-danger'>Ошибка при загрузке данных.</p> : null}
             {isLoading ?
                 <Loader/> :
-                currentDetails ? <Details details={currentDetails} unsetDetails={() => setCurrentDetails(null)}/> :
-                    <React.Fragment>
-                        {content.length > 0 ? <Filter onFilterApply={onFilterApply}/> : null}
-                        <Table
-                            data={preparedData.length > 0 ? orderBy([...preparedData[currentPage]], sortField, sortDirection) : []}
-                            currentPage={currentPage} onPageChange={onPageChange} pageCount={preparedData.length}
-                            sortField={sortField} sortDirection={sortDirection}
-                            onTableSort={onTableSort} onDirectionChange={onDirectionChange} onRowClick={onRowClick}/>
 
-                    </React.Fragment>
+                <TableWrapper
+                    content={content}
+                    sortField={sortField}
+                />
             }
         </div>
     );

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {KEYCODES} from '../../constants';
+import {KEYCODES} from '../../../constants';
 
 const Filter = ({onFilterApply}) => {
     const [inputValue, setInputValue] = useState('');

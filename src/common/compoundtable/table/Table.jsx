@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactPaginate from 'react-paginate';
 
-import {SORT_DIRECTIONS} from '../tableconstants';
+import {PAGE_LIMIT, SORT_DIRECTIONS} from '../tableconstants';
 
 const SortIndicator = ({currentColumn, sortField, sortDirection, onDirectionChange}) => {
     const arrow = sortDirection === SORT_DIRECTIONS.ASC ?
@@ -10,9 +10,9 @@ const SortIndicator = ({currentColumn, sortField, sortDirection, onDirectionChan
     return (currentColumn === sortField) ? arrow : null;
 };
 
-const TableRow = ({row, ind, columns, onRowClick}) => (
+const TableRow = ({row, ind, columns, onRowClick, pseudoId = -1}) => (
     <tr className='cursor-pointer' key={ind} title='Клик - для просмотра детальной информации'
-        onClick={() => onRowClick(row)}>{columns.map(column =>
+        onClick={() => onRowClick(row, pseudoId)}>{columns.map(column =>
         <td key={column + ind}>{row[column]}</td>)}
     </tr>
 );
@@ -41,7 +41,8 @@ const Table = ({data, onTableSort, ...rest}) => {
                     </thead>
                     <tbody>
                     {data.map((row, ind) =>
-                        <TableRow key={ind} row={row} ind={ind} columns={columns} onRowClick={rest.onRowClick}/>
+                        <TableRow key={ind} row={row} ind={ind} columns={columns} onRowClick={rest.onRowClick}
+                        pseudoId={row['id'] ? row.id : ind + rest.currentPage * PAGE_LIMIT}/>
                     )}
                     </tbody>
                 </table>

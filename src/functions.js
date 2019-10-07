@@ -63,3 +63,7 @@ export const taskSearch = (href) => {
 export const getAClassName = (href) => (
     'btn btn-sm ' + (href === window.location.pathname ? '' : ' btn-mdb-color ')
 );
+
+export const getColumns = (data) => {
+   return Array.isArray(data) && data.length > 0 ? Object.keys(data[0]) : [];
+}

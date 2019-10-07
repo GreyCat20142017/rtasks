@@ -1,4 +1,4 @@
-import {DATA_ROOT} from '../constants';
+import {DATA_ROOT} from '../../constants';
 
 export const DATA_URLS = {
     SMALL: {
@@ -17,3 +17,9 @@ export const DATA_URLS = {
     }
 };
 
+export const SORT_DIRECTIONS = {
+    ASC: 'asc',
+    DESC: 'desc'
+};
+
+export const PAGE_LIMIT = 10;
