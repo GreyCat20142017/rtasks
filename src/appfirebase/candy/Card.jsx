@@ -1,28 +1,29 @@
-import React, {useEffect, useState} from 'react';
-import firebase from 'firebase/app';
+import React from 'react';
 import 'firebase/database';
-
-import Loader from '../common/loader/Loader';
-import {FIREBASE_URL, FIREBASE_URL_TYPE, IMAGE_PATH} from './fireconstants';
-import {getComposition, getField} from './firebasefunctions';
+import {IMAGE_PATH, STARS, STARS_PATTERN} from '../fireconstants';
+import {getComposition, getField, getTextForm} from '../firebasefunctions';
 
 const Stars = ({starsAmount, voiceAmount = null}) => {
-    const stars = 'stars'.slice(0, starsAmount).split('');
+    const max = STARS_PATTERN.length;
+    const min = Math.max(Math.min(starsAmount, max), 0);
+    const stars = STARS_PATTERN.slice(0, min).split('');
+    const starsEmpty = starsAmount > 0 ? STARS_PATTERN.slice(0, max - min).split('') : STARS_PATTERN.split('');
     return (
         <p className='text-center p-0 m-0 my-1'
            title={'Звезд: ' + starsAmount + (voiceAmount ? ', голосов: ' + voiceAmount : '')}>
-            {stars.map((star, ind) => <span key={ind} className='text-warning'>&#9733;</span>)}
+            {stars.map((star, ind) => <span key={ind} className='text-warning'>{STARS.STAR}</span>)}
+            {starsEmpty.map((star, ind) => <span key={'e-' + ind} className='text-warning'>{STARS.STAR_EMPTY}</span>)}
         </p>
     );
 };
 
-const Rating = ({rating}) => {
+export const Rating = ({rating}) => {
     const starsAmount = parseInt(getField(rating, 'value'));
     const voiceAmount = parseInt(getField(rating, 'number'));
     return (
         <div className='shadow-sm'>
             <Stars starsAmount={starsAmount} voiceAmount={voiceAmount}/>
-            <p className='p-0 m-0 text-center'>{voiceAmount} голосов</p>
+            <p className='p-0 m-0 text-center'>{voiceAmount} {getTextForm(voiceAmount, ['голос', 'голоса', 'голосов'])}</p>
         </div>
     );
 };
@@ -50,12 +51,12 @@ const Image = ({details}) => (
     </div>
 );
 
-const Card = ({details, unsetDetails}) => (
-    <div className='pt-4 px-2 w-100'>
+export const Card = ({details, unsetDetails, showComposition = true}) => (
+    <div className='pt-4 px-2'>
         <article className='card mx-auto mdb-color-text' style={{maxWidth: '300px'}}>
-            <header className='card-header'>
+            <header className='card-header' style={{minHeight: '110px'}}>
                 <span className='font-weight-bold mdb-color-text'>{details.kind}</span>
-                <h3 className='h3-responsive'>&laquo;{details.name}&raquo;</h3>
+                <h4 className='h4-responsive'>&laquo;{details.name}&raquo;</h4>
             </header>
 
             <div className='card-body'>
@@ -66,7 +67,7 @@ const Card = ({details, unsetDetails}) => (
                     <span className='p-1'>Количество: {details.amount}</span>
                 </div>
                 {details.rating ? <Rating rating={details.rating}/> : null}
-                {details.nutritionFacts ? <Composition nutritionFacts={details.nutritionFacts}/> : null}
+                {details.nutritionFacts && showComposition ? <Composition nutritionFacts={details.nutritionFacts}/> : null}
                 <div className='card-footer'>
                     <button className='btn btn-sm btn-mdb-color' onClick={() => unsetDetails()}>Закрыть</button>
                 </div>
@@ -75,22 +76,3 @@ const Card = ({details, unsetDetails}) => (
     </div>
 );
 
-export const CardContainer = ({details, unsetDetails}) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [rowDetails, setRowDetails] = useState({});
-
-    useEffect(() => {
-        const url = FIREBASE_URL[FIREBASE_URL_TYPE.FIREBASE_DB];
-        const id = details.id;
-
-        setIsLoading(true);
-        firebase.database().ref(url + '/' + id).once('value', (snapshot) => {
-            setRowDetails(snapshot.val());
-            setIsLoading(false);
-        }).catch(() => setIsLoading(false));
-    }, [details.id]);
-
-    return (
-        isLoading ? <Loader/> : <Card details={rowDetails} unsetDetails={unsetDetails}/>
-    );
-};

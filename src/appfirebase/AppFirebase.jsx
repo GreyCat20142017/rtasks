@@ -6,10 +6,12 @@ import 'firebase/database';
 
 import Loader from '../common/loader/Loader';
 import TableWrapper from '../common/compoundtable/table/TableWrapper';
-import {CardContainer} from './Candy';
 import {SORT_DIRECTIONS} from '../common/compoundtable/tableconstants';
 import {FIELDS_LIST, FIREBASE_URL, FIREBASE_URL_TYPE} from './fireconstants';
 import {getDataWithId, getRowMapResult} from './firebasefunctions';
+import {CardContainer} from './candy/CardContainer';
+
+import {Catalog} from './candy/Catalog';
 
 const defaultSortDirection = SORT_DIRECTIONS.ASC;
 
@@ -19,11 +21,25 @@ const getRowClickComponent = () => (props) => {
     );
 };
 
+const CurrentComponent = ({showCatalog, content, sortField, getRowClickComponent, catalog, closeCatalog}) => (
+    showCatalog ?
+        <Catalog catalog={catalog} closeCatalog={closeCatalog}/> :
+        <TableWrapper
+            content={content}
+            sortField={sortField}
+            getRowClickComponent={getRowClickComponent}
+        />
+
+);
+
 const AppFirebase = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [content, setContent] = useState([]);
     const [wasError, setWasError] = useState(null);
     const [sortField, setSortField] = useState('');
+    const [catalog, setCatalog] = useState([]);
+    const [showCatalog, setShowCatalog] = useState(false);
+
 
     const getData = async (url, url_type) => {
         let data = [];
@@ -33,9 +49,11 @@ const AppFirebase = (props) => {
             if (url_type === FIREBASE_URL_TYPE.FIREBASE_DB) {
                 const response = await firebase.database().ref(url).once('value');
                 data = response.val().map(row => getRowMapResult(row, FIELDS_LIST));
+                setCatalog(response.val());
             } else {
                 const response = await axios.get(url);
                 data = response.data.map(row => getRowMapResult(row, FIELDS_LIST));
+                setCatalog(response.data);
             }
             const defaultSortField = data.length > 0 && Object.keys(data[0]).length > 0 ?
                 Object.keys(data[0])[0] : '';
@@ -54,6 +72,7 @@ const AppFirebase = (props) => {
     const getDBData = () => (getData(FIREBASE_URL[FIREBASE_URL_TYPE.FIREBASE_DB], FIREBASE_URL_TYPE.FIREBASE_DB));
 
     const getJSONData = () => (getData(FIREBASE_URL[FIREBASE_URL_TYPE.JSON], FIREBASE_URL_TYPE.JSON));
+
 
     return (
         <React.Fragment>
@@ -77,13 +96,20 @@ const AppFirebase = (props) => {
                                 title='Получение тестовых данных (локальный JSON)'>
                             получить данные (JSON)
                         </button>
+                        {content.length > 0 ?
+                            <button className='btn btn-sm btn-mdb-color ml-1'
+                                    onClick={() => setShowCatalog(!showCatalog)}
+                                    title='Каталог'>
+                                каталог
+                            </button> : null
+                        }
                     </div>
                     {content.length > 0 ?
-                        <TableWrapper
-                            content={content}
-                            sortField={sortField}
-                            getRowClickComponent={getRowClickComponent}
-                        /> :
+                        <CurrentComponent content={content} sortField={sortField}
+                                          getRowClickComponent={getRowClickComponent}
+                                          showCatalog={showCatalog} catalog={catalog}
+                                          closeCatalog={() => setShowCatalog(false)}/>
+                        :
                         <p>Нет данных</p>
                     }
                 </div>

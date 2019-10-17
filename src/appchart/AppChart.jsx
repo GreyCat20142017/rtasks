@@ -10,9 +10,12 @@ import {
     getTotalsField,
     transformUserData,
     transformReposData,
-    getDetailsFields, getPreparedData, getIsAcademy
+    getDetailsFields,
+    getPreparedData,
+    createPDFDefinition,
+    getTotalDetails
 } from './chartfunctions';
-import {GIT_HOUR_LIMIT, GIT_LINK_PARTS, GIT_URLS, LIMIT} from './chartconstants';
+import {CHART_CANVAS, GIT_HOUR_LIMIT, GIT_LINK_PARTS, GIT_URLS, LIMIT} from './chartconstants';
 
 
 const getPagesUrls = (tmpUser, url) => {
@@ -97,19 +100,8 @@ const AppChart = (props) => {
 
     const onTotalButtonClick = () => {
         if (content.user) {
-            const isAcademy = getIsAcademy(content.user.login);
-            const fieldName = isAcademy ? 'project' : 'language';
-            const totalDetails = {};
-            const uniqueIdCount = isAcademy ? content.repos.map(repo => repo.academyId).filter((v, i, a) => a.indexOf(v) === i).length : 0;
-            const aboutId = isAcademy ? `. Из них с неповторяющимися Id академии - ${uniqueIdCount}` : ``;
-            content.repos.forEach(repo => {
-                let key = repo[fieldName] ? repo[fieldName] : '?';
-                totalDetails[key] = totalDetails[key] ? totalDetails[key] + 1 : 1;
-            });
-            setCurrentDetails({
-                details: totalDetails,
-                title: 'Всего репозиториев: ' + content.user.reposCount + aboutId + '. Разбивка по ' + (isAcademy ? 'проектам' : 'языкам') + ':'
-            });
+            const {details, title} = getTotalDetails(content);
+            setCurrentDetails({details, title});
         }
     };
 
@@ -120,6 +112,30 @@ const AppChart = (props) => {
             setWasError('В имени пользователя допустимы только латинские символы, цифры, дефис и подчеркивание');
         }
     };
+
+    const makePdfOperation = (needOpen) => {
+        if (window.pdfMake) {
+            const canvas = document.getElementById(CHART_CANVAS.id);
+            const canvasURL = canvas ? canvas.toDataURL() : null;
+            const totalDetails = getTotalDetails(content);
+            const docDefinition = createPDFDefinition(totalDetails, canvasURL);
+
+            if (needOpen) {
+                window.pdfMake.createPdf(docDefinition).open();
+            } else {
+                window.pdfMake.createPdf(docDefinition).download();
+            }
+        }
+    };
+
+    const onPdfOpenClick = () => {
+        makePdfOperation(true);
+    };
+
+    const onPdfDownloadClick = () => {
+        makePdfOperation(false);
+    };
+
 
     return (
         <div>
@@ -155,6 +171,18 @@ const AppChart = (props) => {
                                     type='button'
                                     onClick={onTotalButtonClick}>
                                     Итоги в виде таблицы
+                                </button>
+                                <button
+                                    className={'btn btn-sm btn-mdb-color ' + (content.user ? 'd-inline-block' : 'd-none')}
+                                    type='button' title='Cформировать и открыть PDF c диаграммой и таблицей'
+                                    onClick={onPdfOpenClick}>
+                                    Открыть PDF
+                                </button>
+                                <button
+                                    className={'btn btn-sm btn-mdb-color ' + (content.user ? 'd-inline-block' : 'd-none')}
+                                    type='button' title='Cформировать и скачать PDF c диаграммой и таблицей'
+                                    onClick={onPdfDownloadClick}>
+                                    Скачать PDF
                                 </button>
                             </React.Fragment>
                     }

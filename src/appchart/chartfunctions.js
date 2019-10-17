@@ -1,4 +1,4 @@
-import {ACADEMY_PREFIX, CHART_COLORS, GIT_TYPES} from './chartconstants';
+import {ACADEMY_PREFIX, CHART_CANVAS, CHART_COLORS, GIT_TYPES} from './chartconstants';
 
 const isDigit = (str) => (str.match(/[0-9]/));
 
@@ -134,4 +134,71 @@ export const getDropDownData = (operations) => {
         text: operations[key],
         link: key
     }));
+};
+
+export const getTotalDetails = (content) => {
+    const details = {};
+    let title = 'Нет данных';
+    if (content.user) {
+        const isAcademy = getIsAcademy(content.user.login);
+        const fieldName = isAcademy ? 'project' : 'language';
+        const uniqueIdCount = isAcademy ? content.repos.map(repo => repo.academyId).filter((v, i, a) => a.indexOf(v) === i).length : 0;
+        const aboutId = isAcademy ? `. Из них с неповторяющимися Id академии - ${uniqueIdCount}` : ``;
+        content.repos.forEach(repo => {
+            let key = repo[fieldName] ? repo[fieldName] : '?';
+            details[key] = details[key] ? details[key] + 1 : 1;
+        });
+        title = 'Всего репозиториев: ' + content.user.reposCount + aboutId + '. Разбивка по ' + (isAcademy ? 'проектам' : 'языкам') + ':';
+    }
+    return ({details, title, login: content.user ? content.user.login : ' ? '});
+};
+
+
+export const createPDFDefinition = (totalDetails, canvasURL) => {
+    const ul = Object.keys(totalDetails.details).sort((b, a) => (parseInt(totalDetails.details[a]) - parseInt(totalDetails.details[b]))).map(key => [' ', key, totalDetails.details[key], ' ']);
+
+    const headerTitle = 'Данные по ' + totalDetails.login + ' (' + (new Date()).toLocaleString('ru') + ')';
+
+    const pdfContent = [
+        {text: headerTitle, margin: 20, fontSize: 20, alignment: 'center'},
+        {text: totalDetails.title, margin: 20, alignment: 'center'}
+    ];
+
+    if (canvasURL) {
+        pdfContent.push({
+            image: canvasURL,
+            width: CHART_CANVAS.width,
+            height: CHART_CANVAS.height,
+            alignment: 'center',
+            margin: 20
+        });
+    }
+
+    pdfContent.push({
+        layout: 'lightHorizontalLines',
+        table: {
+            widths: ['*', 'auto', 'auto', '*'],
+            body: ul
+        }
+    });
+
+    const docDefinition = {
+        pageSize: 'A4',
+        pageOrientation: 'portrait',
+        content: pdfContent,
+        header: () => ({
+            text: '',
+            fontSize: 20,
+            bold: true
+        }),
+
+        footer: (currentPage, pageCount) => {
+            return ({
+                text: currentPage.toString() + ' / ' + pageCount,
+                alignment: 'center'
+            });
+        }
+    };
+
+    return docDefinition;
 };

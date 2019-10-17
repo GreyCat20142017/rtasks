@@ -12,10 +12,11 @@ import Profile from './appfirebase/profile/Profile';
 import Disabled from './common/Disabled';
 import ErrorBoundary from './errorboundary/ErrorBoundary';
 import {DISABLED_COMPONENTS, MAP_TYPES} from './constants';
+import {Catalog} from './appfirebase/candy/Catalog';
 
 export const routes = {
     '/': () => <AppMain/>,
-    '/chart': () => <AppChart/>,
+    '/chart': () =>  <ErrorBoundary> <AppChart/> </ErrorBoundary>,
     '/table': () => <AppTable/>,
     '/mapyandex': () => (DISABLED_COMPONENTS.indexOf(MAP_TYPES.YANDEX) >= 0 ?
         <Disabled/> :
@@ -24,6 +25,7 @@ export const routes = {
         <Disabled/> :
         <ErrorBoundary> <AppMap mapType={MAP_TYPES.GIS} mapInit={null} geoInit={null}/> </ErrorBoundary>),
     '/firebase': () => <ErrorBoundary message={'Что-то не то с Firebase получилось.'}><AppFirebase/></ErrorBoundary>,
+    '/firebase/catalog': (props) => <ErrorBoundary message={'Что-то не то с Firebase получилось.'}><Catalog {...props}/></ErrorBoundary>,
     '/login': () => <Login/>,
     '/register': () => <Register/>,
     '/profile': ()=> <Profile/>,

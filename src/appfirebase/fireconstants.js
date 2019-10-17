@@ -21,3 +21,10 @@ export const FIELDS_LIST = [
 ];
 
 export const IMAGE_PATH = '/img/';
+
+
+export const STARS_PATTERN = 'stars';
+export const STARS = {
+    STAR: '\u{2605}',
+    STAR_EMPTY: '\u{2606}'
+};

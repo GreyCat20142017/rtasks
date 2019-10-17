@@ -3,7 +3,7 @@ import {Chart} from 'chart.js';
 
 import DropDown from '../../common/dropdown/DropDownHook';
 import {getDropDownData, transformToChartData} from '../chartfunctions';
-import {CHART_TYPES} from '../chartconstants';
+import {CHART_CANVAS, CHART_TYPES} from '../chartconstants';
 
 let chart = null;
 
@@ -41,7 +41,7 @@ const SimpleChart = ({data = [], chartTitle, chartFooter, onLegendClick, hidden 
                                   linkCss: 'dropdown-item'
                               }}/>
                 </div>
-                <canvas ref={canvas} id="simpleChart" width="270" height="100"></canvas>
+                <canvas ref={canvas} id={CHART_CANVAS.id} width={CHART_CANVAS.width} height={CHART_CANVAS.height}></canvas>
                 <p className='my-2'>{chartFooter}</p>
             </div>
         );

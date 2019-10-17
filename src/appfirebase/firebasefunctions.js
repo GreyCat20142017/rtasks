@@ -54,3 +54,18 @@ export const getDataWithId = (source) => {
     }
     return result;
 };
+
+export const getTextForm = (sourceNumber, textForms) => {
+    sourceNumber = Math.abs(sourceNumber) % 100;
+    let temporaryNumber = sourceNumber % 10;
+    if (sourceNumber > 10 && sourceNumber < 20) {
+        return textForms[2];
+    }
+    if (temporaryNumber > 1 && temporaryNumber < 5) {
+        return textForms[1];
+    }
+    if (temporaryNumber === 1) {
+        return textForms[0];
+    }
+    return textForms[2];
+};

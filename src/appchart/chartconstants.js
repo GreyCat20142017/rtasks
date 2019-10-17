@@ -57,3 +57,5 @@ export const GIT_LINK_PARTS = {
 };
 
 export const GIT_HOUR_LIMIT = 60;
+
+export const CHART_CANVAS = {id: 'simpleChart', width: 270, height: 100};
