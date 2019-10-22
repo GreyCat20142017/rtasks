@@ -1,5 +1,5 @@
 import React from 'react';
-import {CONTROL_BUTTON_TYPES, TASKS} from './constants';
+import {APP_ROOT, CONTROL_BUTTON_TYPES, TASKS} from './constants';
 
 export const moveDown = (sourceArr, ind) => {
     if (sourceArr.length <= 1) {
@@ -63,6 +63,13 @@ export const getInlineSvg = (name, width = 20, height = 20, fillColor = 'white',
                     <path d="M3 5H1v16c0 1.1.9 2 2 2h16v-2H3V5zm18-4H7c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 16H7V3h14v14z"/>
                 </svg>
             );
+            case 'filter':
+            return (
+                <svg version="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" width={width} height={height}
+                     fill={fillColor} stroke={strokeColor}>
+                    <path d="M8.7 7.7c-.4.3-.7 3.4-.7 6.7v6.1l8.3 8.5c4.6 4.7 14.3 15 21.7 23 7.4 8 14.9 16 16.6 17.7l3.1 3.3h32.6l3.1-3.3C95.1 68 102.6 60 110 52c7.4-7.9 17.2-18.3 21.7-23l8.3-8.5-.3-6.5-.2-6.5-65.1-.3c-35.8-.1-65.4.1-65.7.5zM56.7 79.6c-.4.4-.7 10.9-.7 23.4v22.7l16.2 9.7c8.8 5.3 16.8 9.5 17.7 9.4 1.4-.3 1.6-3.9 1.6-32.8V79.5l-17.1-.3c-9.3-.1-17.3.1-17.7.4z"/>
+                </svg>
+            );
 
         default:
             return (<svg xmlns="http://www.w3.org/2000/svg" id="default" viewBox="0 0 17 13" width={width} height={height}
@@ -71,7 +78,7 @@ export const getInlineSvg = (name, width = 20, height = 20, fillColor = 'white',
 };
 
 export const taskSearch = (href) => {
-  const result = Object.entries(TASKS).find(task => task[1].href === href);
+  const result = Object.entries(TASKS).find(task => APP_ROOT + task[1].href === href);
   return Array.isArray(result)  ? result[0] : 'MAIN';
 };
 

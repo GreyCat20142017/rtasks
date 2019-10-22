@@ -1,16 +1,16 @@
-import {DATA_ROOT} from '../constants';
+import {APP_ROOT} from '../constants';
 
 export const GIT_URLS = {
     PHPTEST: {
         name: 'Intensive-test',
-        reposUrl: DATA_ROOT + 'data/testRepos.json',
-        userUrl: DATA_ROOT + 'data/testUser.json',
+        reposUrl: APP_ROOT + '/data/testRepos.json',
+        userUrl: APP_ROOT + '/data/testUser.json',
         title: 'Тестовые данные по интенсиву (из папки приложения)'
     },
     TEST: {
         name: 'User-test',
-        reposUrl: DATA_ROOT + 'data/gitRepos.json',
-        userUrl: DATA_ROOT + 'data/gitUser.json',
+        reposUrl: APP_ROOT + '/data/gitRepos.json',
+        userUrl: APP_ROOT + '/data/gitUser.json',
         title: 'Тестовые данные по пользователю github (из папки приложения).'
     }
     // NODETEST: {

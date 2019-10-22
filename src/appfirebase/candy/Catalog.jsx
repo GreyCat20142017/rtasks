@@ -89,11 +89,16 @@ export const Catalog = ({catalog, closeCatalog}) => {
 
     return (
         <div className='mt-4 p-3 shadow-lg fixed-bottom h-100 w-100 bg-white text-center d-flex flex-column'>
-            <div className='col-sm-12 col-md-10 mx-auto h-100 '>
+            <div className='col-sm-12 col-md-10 mx-auto h-100'>
                 <h5 className='h5-responsive pb-2'>Каталог продуктов (по мотивам Candyshop)</h5>
                 <p className='mdb-color-text'><small>{getSubHeader(filterData)}</small></p>
                 <div className='d-flex justify-content-between'>
-                    <SidenavSwitcher isSidenavOpen={isSidenavOpen} switchSidenav={switchSidenav}/>
+                    <div>
+                        <button className='btn btn-sm' title='Выход из просмотра каталога' onClick={closeCatalog}>
+                            ESC-выход
+                        </button>
+                        <SidenavSwitcher isSidenavOpen={isSidenavOpen} switchSidenav={switchSidenav}/>
+                    </div>
                     <p className='text-warning'><small>Народ жаждет Кэндишопа!</small><span
                         className='font-weight-bold'>&#9786;</span></p>
                 </div>

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+
 import axios from 'axios';
 import {orderBy} from 'lodash';
 import firebase from 'firebase/app';
@@ -10,7 +11,6 @@ import {SORT_DIRECTIONS} from '../common/compoundtable/tableconstants';
 import {FIELDS_LIST, FIREBASE_URL, FIREBASE_URL_TYPE} from './fireconstants';
 import {getDataWithId, getRowMapResult} from './firebasefunctions';
 import {CardContainer} from './candy/CardContainer';
-
 import {Catalog} from './candy/Catalog';
 
 const defaultSortDirection = SORT_DIRECTIONS.ASC;
@@ -29,7 +29,6 @@ const CurrentComponent = ({showCatalog, content, sortField, getRowClickComponent
             sortField={sortField}
             getRowClickComponent={getRowClickComponent}
         />
-
 );
 
 const AppFirebase = (props) => {
@@ -39,7 +38,6 @@ const AppFirebase = (props) => {
     const [sortField, setSortField] = useState('');
     const [catalog, setCatalog] = useState([]);
     const [showCatalog, setShowCatalog] = useState(false);
-
 
     const getData = async (url, url_type) => {
         let data = [];
@@ -83,7 +81,6 @@ const AppFirebase = (props) => {
     };
 
     const getJSONData = () => (getData(FIREBASE_URL[FIREBASE_URL_TYPE.JSON], FIREBASE_URL_TYPE.JSON));
-
 
     return (
         <React.Fragment>

@@ -1,4 +1,4 @@
-import {DATA_ROOT} from '../constants';
+import {APP_ROOT} from '../constants';
 
 export const FIREBASE_URL_TYPE = {
     FIREBASE_API: 'api',
@@ -9,7 +9,7 @@ export const FIREBASE_URL_TYPE = {
 export const FIREBASE_URL = {
     [FIREBASE_URL_TYPE.FIREBASE_API]: 'https://rtasks-cacd5.firebaseio.com/candy',
     [FIREBASE_URL_TYPE.FIREBASE_DB]: '/candy',
-    [FIREBASE_URL_TYPE.JSON]:  DATA_ROOT + '/data/candy'
+    [FIREBASE_URL_TYPE.JSON]:  APP_ROOT + '/data/candy'
 };
 
 export const FIELDS_LIST = [
@@ -20,8 +20,7 @@ export const FIELDS_LIST = [
     {name: 'weight', defaultValue: 0}
 ];
 
-export const IMAGE_PATH = '/img/';
-
+export const IMAGE_PATH =  APP_ROOT + '/img/';
 
 export const STARS_PATTERN = 'stars';
 export const STARS = {

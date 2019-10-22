@@ -14,16 +14,16 @@ export const Kinds = ({kinds, onCheckBoxClick, selectAll, unSelectAll, title = '
         kinds ?
             <>
                 <hr/>
-                <label className='font-weight-bold text-center'>{title}</label>
-                <div className='p-2 text-left'>
+                <p className='font-weight-bolder text-center my-0 py-0'>{title}</p>
+                <div className='py-1 px-2 text-left'>
                     {Object.keys(kinds).map(kind =>
-                        <div className='custom-control custom-checkbox' key={kind}>
+                        <div className='custom-control custom-checkbox pt-1' key={kind}>
                             <input type='checkbox' className='custom-control-input' id={'check' + kind}
                                    checked={kinds[kind]}
                                    value={kinds[kind]}
                                    onChange={() => onCheckBoxClick(kind)}/>
                             <label className='custom-control-label'
-                                   htmlFor={'check' + kind}>{RUSSIAN_TITLES[kind] || kind}</label>
+                                   htmlFor={'check' + kind}><small>{RUSSIAN_TITLES[kind] || kind}</small></label>
                         </div>
                     )}
                 </div>
@@ -47,8 +47,8 @@ export const TextForm = ({text, setText}) => (
         <div className='px-1'>
             <label className='font-weight-bold' htmlFor='text'
                    title='В т.ч. по цене, количеству и части названия и вида'>По тексту:</label>
-            <p className='d-flex'>
-                <input className='w-responsive' type='text' id='text' value={text}
+            <p className='d-flex align-items-center p-0'>
+                <input className='w-responsive h-75' type='text' id='text' value={text}
                        onChange={(evt) => setText(evt.target.value)}/>
                 <button className='btn btn-sm px-2' disabled={text.length === 0} title='Очистить текст'
                         aria-label={'Очистить текст'}
