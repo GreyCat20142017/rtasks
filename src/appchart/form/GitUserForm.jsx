@@ -9,7 +9,7 @@ const GitUserForm = ({onGitUserClick}) => {
                     title='Получить данные по указанному пользователю GitHub'>
                 {'Построить график по: ' + inputValue}
             </button>
-            <input className='col-12 col-md-6 form-control' value={inputValue} pattern='[A-Za-z0-9_-]'
+            <input className='col-12 col-md-5 form-control' value={inputValue} pattern='[A-Za-z0-9_-]'
                    title='Пользователь GitHub для построения графика' placeholder='Github user'
                    type='text' id='idGitUser' onChange={(evt) => setInputValue(evt.target.value)}/>
         </div>

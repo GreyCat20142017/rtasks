@@ -51,27 +51,47 @@ const Image = ({details}) => (
     </div>
 );
 
+const CardError = ({unsetDetails}) => (
+    <>
+        <header className='card-header' style={{minHeight: '110px'}}>
+            <span className='font-weight-bold mdb-color-text'>Не удалось получить данные о продукте</span>
+        </header>
+        <div className='card-footer'>
+            <button className='btn btn-sm btn-mdb-color' onClick={() => unsetDetails()}>Закрыть</button>
+        </div>
+    </>
+);
+
 export const Card = ({details, unsetDetails, showComposition = true}) => (
     <div className='pt-4 px-2'>
         <article className='card mx-auto mdb-color-text' style={{maxWidth: '300px'}}>
-            <header className='card-header' style={{minHeight: '110px'}}>
-                <span className='font-weight-bold mdb-color-text'>{details.kind}</span>
-                <h4 className='h4-responsive'>&laquo;{details.name}&raquo;</h4>
-            </header>
+            {details ?
+                <>
+                    <header className='card-header' style={{minHeight: '110px'}}>
+                        <span className='font-weight-bold mdb-color-text'>{details.kind}</span>
+                        <h4 className='h4-responsive'>&laquo;{details.name}&raquo;</h4>
+                    </header>
 
-            <div className='card-body'>
-                <Image details={details}/>
-
-                <div className='card-group justify-content-between'>
-                    <span className='p-1'>Цена: {details.price}</span>
-                    <span className='p-1'>Количество: {details.amount}</span>
-                </div>
-                {details.rating ? <Rating rating={details.rating}/> : null}
-                {details.nutritionFacts && showComposition ? <Composition nutritionFacts={details.nutritionFacts}/> : null}
-                <div className='card-footer'>
-                    <button className='btn btn-sm btn-mdb-color' onClick={() => unsetDetails()}>Закрыть</button>
-                </div>
-            </div>
+                    <div className='card-body position-relative'>
+                        <Image details={details}/>
+                        <span className='btn circle position-absolute btn-mdb-color text-white p-2'
+                              style={{top: '5px', right: '20px', borderRadius: '50%'}}>
+                            {details.weight || ''} г
+                        </span>
+                        <div className='card-group justify-content-between'>
+                            <span className='p-1'>Цена: {details.price}</span>
+                            <span className='p-1'>Количество: {details.amount}</span>
+                        </div>
+                        {details.rating ? <Rating rating={details.rating}/> : null}
+                        {details.nutritionFacts && showComposition ?
+                            <Composition nutritionFacts={details.nutritionFacts}/> : null}
+                        <div className='card-footer'>
+                            <button className='btn btn-sm btn-mdb-color' onClick={() => unsetDetails()}>Закрыть</button>
+                        </div>
+                    </div>
+                </> :
+                <CardError unsetDetails={unsetDetails}/>
+            }
         </article>
     </div>
 );

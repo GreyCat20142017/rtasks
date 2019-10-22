@@ -7,9 +7,9 @@ export const FIREBASE_URL_TYPE = {
 };
 
 export const FIREBASE_URL = {
-    [FIREBASE_URL_TYPE.FIREBASE_API]: 'https://rtasks-cacd5.firebaseio.com/candy.json',
+    [FIREBASE_URL_TYPE.FIREBASE_API]: 'https://rtasks-cacd5.firebaseio.com/candy',
     [FIREBASE_URL_TYPE.FIREBASE_DB]: '/candy',
-    [FIREBASE_URL_TYPE.JSON]:  DATA_ROOT + '/data/candy.json'
+    [FIREBASE_URL_TYPE.JSON]:  DATA_ROOT + '/data/candy'
 };
 
 export const FIELDS_LIST = [

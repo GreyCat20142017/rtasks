@@ -47,12 +47,17 @@ const AppFirebase = (props) => {
         setWasError(null);
         try {
             if (url_type === FIREBASE_URL_TYPE.FIREBASE_DB) {
-                const response = await firebase.database().ref(url).once('value');
-                data = response.val().map(row => getRowMapResult(row, FIELDS_LIST));
-                setCatalog(response.val());
+                if (firebase.database().ref('.info/connected')) {
+                    const response = await firebase.database().ref(url).once('value');
+                    data = response ? response.val().map(row => getRowMapResult(row, FIELDS_LIST)) : [];
+                    setCatalog(response.val());
+                } else {
+                    setIsLoading(false);
+                    setWasError('База Firebase недоступна');
+                }
             } else {
-                const response = await axios.get(url);
-                data = response.data.map(row => getRowMapResult(row, FIELDS_LIST));
+                const response = await axios.get(url + '.json', {timeout: 1000});
+                data = response ? response.data.map(row => getRowMapResult(row, FIELDS_LIST)) : [];
                 setCatalog(response.data);
             }
             const defaultSortField = data.length > 0 && Object.keys(data[0]).length > 0 ?
@@ -69,7 +74,13 @@ const AppFirebase = (props) => {
 
     const getAPIData = () => (getData(FIREBASE_URL[FIREBASE_URL_TYPE.FIREBASE_API], FIREBASE_URL_TYPE.FIREBASE_API));
 
-    const getDBData = () => (getData(FIREBASE_URL[FIREBASE_URL_TYPE.FIREBASE_DB], FIREBASE_URL_TYPE.FIREBASE_DB));
+    const getDBData = () => {
+        if (window.navigator.onLine) {
+            getData(FIREBASE_URL[FIREBASE_URL_TYPE.FIREBASE_DB], FIREBASE_URL_TYPE.FIREBASE_DB);
+        } else {
+            setWasError('Offline!');
+        }
+    };
 
     const getJSONData = () => (getData(FIREBASE_URL[FIREBASE_URL_TYPE.JSON], FIREBASE_URL_TYPE.JSON));
 
@@ -97,7 +108,7 @@ const AppFirebase = (props) => {
                             получить данные (JSON)
                         </button>
                         {content.length > 0 ?
-                            <button className='btn btn-sm btn-mdb-color ml-1'
+                            <button className='btn btn-sm btn-light-green ml-1'
                                     onClick={() => setShowCatalog(!showCatalog)}
                                     title='Каталог'>
                                 каталог
